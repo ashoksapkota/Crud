@@ -13,7 +13,7 @@ import android.widget.Toast;
 public class MainActivity extends AppCompatActivity {
 
     EditText txt_id, txt_name, txt_Lastname, txt_marks;
-    Button btn_insert, view_data;
+    Button btn_insert, view_data, update_data, delete_data;
     DatabaseHelper DB;
     ;
 
@@ -27,6 +27,8 @@ public class MainActivity extends AppCompatActivity {
         txt_Lastname = findViewById(R.id.last_name);
         txt_marks = findViewById(R.id.marks);
         view_data = findViewById(R.id.btn_view);
+        update_data = findViewById(R.id.btn_update);
+        delete_data = findViewById(R.id.btn_delete);
 
 
         btn_insert = findViewById(R.id.btn_insert);
@@ -48,7 +50,8 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-        view_data.setOnClickListener(new View.OnClickListener() {
+        view_data.setOnClickListener(new View.OnClickListener()
+        {
             @Override
             public void onClick(View v) {
                 Cursor cur=DB.getAllData();
@@ -65,6 +68,34 @@ public class MainActivity extends AppCompatActivity {
 
                 }
                 show("Data",buffer.toString());
+            }
+        });
+
+        update_data.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                boolean update = DB.Updatedata(txt_id.getText().toString().trim(), txt_name.getText().toString().trim(),
+                        txt_Lastname.getText().toString().trim(), txt_marks.getText().toString().trim());
+
+                if (true == update){
+                    Toast.makeText(MainActivity.this, "Data Updated", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    Toast.makeText(MainActivity.this, "Data not Updated", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
+
+        delete_data.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Integer delete = DB.deleteData(txt_id.getText().toString().trim());
+                if(delete > 0){
+                    Toast.makeText(MainActivity.this, "Data Deleted", Toast.LENGTH_SHORT).show();
+                }
+                else {Toast.makeText(MainActivity.this, "Data Not Deleted", Toast.LENGTH_SHORT).show();}
             }
         });
     }
